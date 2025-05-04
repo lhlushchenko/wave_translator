@@ -16,9 +16,27 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
+  async createUser(email: string, password: string, role: string): Promise<User> {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new this.userModel({ email, password: hashedPassword, role });
+    return user.save();
+  }
+
+  async initializeUsers() {
+    const adminExists = await this.userModel.findOne({ email: 'admin@admin.com' });
+    if (!adminExists) {
+      await this.createUser('admin@admin.com', 'adminpassword', 'admin');
+    }
+
+    const supportExists = await this.userModel.findOne({ email: 'support@support.com' });
+    if (!supportExists) {
+      await this.createUser('support@support.com', 'supportpassword', 'support');
+    }
+  }
+
   async register(dto: RegisterDto) {
     const hashed = await bcrypt.hash(dto.password, 10);
-    const user = await this.userModel.create({ email: dto.email, password: hashed });
+    const user = await this.userModel.create({ email: dto.email, password: hashed, role: dto.role || 'user', });
     return this.generateToken(user);
   }
 
