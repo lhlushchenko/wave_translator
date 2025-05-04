@@ -1,2 +1,5 @@
-# wave_translator
-Training project for university
+# WaveTranslation
+
+## How to start project
+1. `backend` folder
+   2. 
