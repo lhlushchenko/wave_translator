@@ -12,7 +12,7 @@
     { name: 'Італійська', code: 'it' },
   ]);
 
-  const selectedLanguage = ref(languages[1]); // default 'en'
+  const selectedLanguage = ref(languages.value[1]); // default 'en'
   const inputText = ref<string>('')
   const translatedText = ref<string>('')
 
@@ -24,7 +24,7 @@
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ text: inputText.value, targetLang: 'en' })
+        body: JSON.stringify({ text: inputText.value, targetLang: selectedLanguage.value })
       });
       const data = await response.json();
       translatedText.value = data.translation;

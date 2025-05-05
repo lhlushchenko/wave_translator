@@ -6,17 +6,21 @@ import { TranslationService } from './translation.service';
 import { User } from '../schemas/user.schema';
 
 @Controller('translations')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class TranslationController {
   constructor(private readonly translationService: TranslationService) {}
 
   @Post()
   translate(@Body() dto: TranslateDto, @CurrentUser() user: User) {
-    return this.translationService.translate(dto.text, dto.targetLang, user.userId);
+    return this.translationService.translate(
+      dto.text,
+      dto.targetLang,
+      user.userId,
+    );
   }
 
   @Get()
-  history(@CurrentUser() user: any) {
+  history(@CurrentUser() user: User) {
     return this.translationService.getHistory(user.userId);
   }
 }

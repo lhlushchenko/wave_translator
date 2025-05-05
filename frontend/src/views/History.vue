@@ -8,7 +8,7 @@
 
   const getHistory = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/history`, { method: 'GET' })
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/translations`, { method: 'GET', headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, } })
       const data = await res.json()
       if (res.ok) {
         history.value = data.history

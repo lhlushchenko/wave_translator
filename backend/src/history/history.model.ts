@@ -1,25 +1,25 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Document } from 'mongoose'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 @Schema()
 export class History extends Document {
   @Prop({ required: true })
-  userId: string
+  userId: string;
 
   @Prop({ required: true })
-  sourceLanguage: string
+  sourceLanguage: string;
 
   @Prop({ required: true })
-  targetLanguage: string
+  targetLanguage: string;
 
   @Prop({ required: true })
-  originalText: string
+  originalText: string;
 
   @Prop({ required: true })
-  translatedText: string
+  translatedText: string;
 
   @Prop({ required: true })
-  date: Date
+  createdAt: Date;
 }
 
-export const HistorySchema = SchemaFactory.createForClass(History)
+export const HistorySchema = SchemaFactory.createForClass(History);
