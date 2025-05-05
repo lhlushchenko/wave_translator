@@ -5,6 +5,9 @@ export type TranslationDocument = Translation & Document;
 
 @Schema({ timestamps: true })
 export class Translation {
+  @Prop()
+  userId: string;
+
   @Prop({ required: true })
   text: string;
 
@@ -12,10 +15,10 @@ export class Translation {
   translatedText: string;
 
   @Prop({ required: true })
-  targetLang: string;
+  sourceLang: string;
 
   @Prop({ required: true })
-  userId: string;
+  targetLang: string;
 }
 
 export const TranslationSchema = SchemaFactory.createForClass(Translation);

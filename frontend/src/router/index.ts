@@ -26,13 +26,13 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'Profile',
-      meta: { layout: AuthLayout },
+      meta: { layout: AuthLayout, requiresAuth: true },
       component: () => import('@/views/Profile.vue'),
     },
     {
       path: '/history',
       name: 'History',
-      meta: { layout: AuthLayout },
+      meta: { layout: AuthLayout, requiresAuth: true },
       component: () => import('@/views/History.vue'),
     },
   ],

@@ -42,8 +42,8 @@
     <div class="max-w-md mx-auto py-10 space-y-4">
       <h1 class="text-2xl font-bold mb-4">Реєстрація</h1>
 
-      <InputText v-model="email" placeholder="Email" class="w-full" />
-      <Password v-model="password" placeholder="Пароль" toggleMask class="w-full" />
+      <InputText v-model="email" placeholder="Email" fluid />
+      <Password v-model="password" placeholder="Пароль" toggleMask fluid :feedback="false" />
 
       <Button label="Зареєструватися" class="w-full" @click="register" />
       <p v-if="error" class="text-red-500 text-sm">{{ error }}</p>

@@ -5,5 +5,8 @@ export class TranslateDto {
   text: string;
 
   @IsIn(['en', 'uk', 'es', 'it'])
+  sourceLang: string;
+
+  @IsIn(['en', 'uk', 'es', 'it'])
   targetLang: string;
 }

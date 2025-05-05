@@ -4,9 +4,9 @@
 </script>
 
 <template>
-  <div class="guest-layout h-full">
+  <div class="guest-layout relative h-full">
     <AppHeader />
-    <main class="min-h-[calc(100vh-160px)] px-4 py-8">
+    <main class="px-4 py-8">
       <slot />
     </main>
     <AppFooter />
