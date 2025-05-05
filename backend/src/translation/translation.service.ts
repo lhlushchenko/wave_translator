@@ -52,7 +52,6 @@ export class TranslationService {
     });
 
     if (userId) {
-      console.log('user present');
       // Додати запис до історії
       await this.historyService.addTranslationToHistory(
         userId,

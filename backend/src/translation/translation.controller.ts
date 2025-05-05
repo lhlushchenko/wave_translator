@@ -12,7 +12,6 @@ export class TranslationController {
   @UseGuards(JwtAuthGuard)
   @Post()
   translate(@Body() dto: TranslateDto, @CurrentUser() user: User) {
-    console.log(user);
     return this.translationService.translate(
       dto.text,
       dto.sourceLang,

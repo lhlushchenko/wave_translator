@@ -9,9 +9,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
 
-    // Логування для перевірки деталей помилки
-    console.error('Error caught in filter:', exception);
-
     const errorResponse = {
       statusCode: status,
       message: exception.message || 'Internal Server Error',

@@ -20,7 +20,6 @@
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/user/history`, { method: 'GET', headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, } })
       const data = await res.json()
-      console.log(data)
       if (res.ok) {
         history.value = data.map(item => ({
           ...item,
