@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <div class="guest-layout">
+  <div class="guest-layout h-full">
     <AppHeader />
     <main class="min-h-[calc(100vh-160px)] px-4 py-8">
       <slot />

@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { v4 as uuid } from 'uuid';
 import { User, UserDocument } from '../schemas/user.schema';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -16,27 +17,49 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async createUser(email: string, password: string, role: string): Promise<User> {
+  async createUser(
+    email: string,
+    password: string,
+    role: string,
+  ): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new this.userModel({ email, password: hashedPassword, role });
+    const user = new this.userModel({
+      email,
+      password: hashedPassword,
+      role,
+      userId: uuid(),
+    });
     return user.save();
   }
 
   async initializeUsers() {
-    const adminExists = await this.userModel.findOne({ email: 'admin@admin.com' });
+    const adminExists = await this.userModel.findOne({
+      email: 'admin@admin.com',
+    });
     if (!adminExists) {
       await this.createUser('admin@admin.com', 'adminpassword', 'admin');
     }
 
-    const supportExists = await this.userModel.findOne({ email: 'support@support.com' });
+    const supportExists = await this.userModel.findOne({
+      email: 'support@support.com',
+    });
     if (!supportExists) {
-      await this.createUser('support@support.com', 'supportpassword', 'support');
+      await this.createUser(
+        'support@support.com',
+        'supportpassword',
+        'support',
+      );
     }
   }
 
   async register(dto: RegisterDto) {
     const hashed = await bcrypt.hash(dto.password, 10);
-    const user = await this.userModel.create({ email: dto.email, password: hashed, role: dto.role || 'user', });
+    const user = await this.userModel.create({
+      email: dto.email,
+      password: hashed,
+      role: dto.role || 'user',
+      userId: uuid(),
+    });
     return this.generateToken(user);
   }
 
@@ -49,7 +72,7 @@ export class AuthService {
   }
 
   private generateToken(user: UserDocument) {
-    const payload = { sub: user._id, email: user.email, role: user.role };
+    const payload = { userId: user.userId, email: user.email, role: user.role };
     const secret = this.configService.get<string>('JWT_SECRET');
     return {
       access_token: this.jwtService.sign(payload, { secret }),

@@ -10,7 +10,7 @@ export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async getProfile(userId: string) {
-    const user = await this.userModel.findById(userId).select('-password');
+    const user = await this.userModel.findOne({ userId }).select('-password');
     if (!user) throw new NotFoundException('User not found');
     return user;
   }
@@ -22,9 +22,15 @@ export class UserService {
       updates.password = await bcrypt.hash(dto.password, 10);
     }
 
-    const updated = await this.userModel.findByIdAndUpdate(userId, updates, {
-      new: true,
-    }).select('-password');
+    if (dto.name) {
+      updates.name = dto.name; // додано нове поле
+    }
+
+    const updated = await this.userModel
+      .findOneAndUpdate({ userId }, updates, {
+        new: true,
+      })
+      .select('-password');
 
     return updated;
   }

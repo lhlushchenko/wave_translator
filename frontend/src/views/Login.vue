@@ -2,6 +2,7 @@
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useApiToast } from '@/composables/useApiToast.ts'
+  import GuestLayout from '@/layouts/GuestLayout.vue'
 
   const router = useRouter()
   const { showApiError } = useApiToast()
@@ -36,15 +37,17 @@
 </script>
 
 <template>
-  <div class="max-w-md mx-auto py-10 space-y-4">
-    <h1 class="text-2xl font-bold mb-4">Вхід</h1>
+  <GuestLayout>
+    <div class="max-w-md mx-auto py-10 space-y-4">
+      <h1 class="text-2xl font-bold mb-4">Вхід</h1>
 
-    <InputText v-model="email" placeholder="Email" class="w-full" />
-    <Password v-model="password" placeholder="Пароль" toggleMask class="w-full" />
+      <InputText v-model="email" placeholder="Email" class="w-full" />
+      <Password v-model="password" placeholder="Пароль" toggleMask class="w-full" />
 
-    <Button label="Увійти" class="w-full" @click="login" />
-    <p v-if="error" class="text-red-500 text-sm">{{ error }}</p>
-  </div>
+      <Button label="Увійти" class="w-full" @click="login" />
+      <p v-if="error" class="text-red-500 text-sm">{{ error }}</p>
+    </div>
+  </GuestLayout>
 </template>
 
 <style scoped>

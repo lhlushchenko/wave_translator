@@ -12,9 +12,9 @@
   const menuItems = computed(() => {
     return isAuthenticated.value
       ? [
-        { label: 'Перекладач', to: '/' },
-        { label: 'Історія', to: '/history' },
-        { label: 'Кабінет', to: '/profile' },
+        { label: 'Перекладач', icon: 'pi-book', to: '/' },
+        { label: 'Історія', icon: 'pi-history', to: '/history' },
+        { label: 'Кабінет', icon: 'pi-user', to: '/profile' },
       ]
       : []
   })
@@ -30,7 +30,12 @@
     <template #start>
       <RouterLink to="/" class="text-xl font-bold text-blue-600">WaveTranslate</RouterLink>
     </template>
-
+    <template #item="{ item }">
+      <router-link :to="item.to" custom>
+        <span :class="item.icon" />
+        <span>{{ item.label }}</span>
+      </router-link>
+    </template>
     <template #end>
       <div class="flex items-center gap-2">
         <template v-if="isAuthenticated">

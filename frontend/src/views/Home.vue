@@ -1,15 +1,16 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import { useApiToast } from '@/composables/useApiToast.ts'
+  import AuthLayout from '@/layouts/AuthLayout.vue'
 
   const { showApiError } = useApiToast()
 
-  const languages = [
+  const languages = ref([
     { name: 'Українська', code: 'uk' },
     { name: 'Англійська', code: 'en' },
     { name: 'Іспанська', code: 'es' },
     { name: 'Італійська', code: 'it' },
-  ];
+  ]);
 
   const selectedLanguage = ref(languages[1]); // default 'en'
   const inputText = ref<string>('')
@@ -21,7 +22,7 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({ text: inputText.value, targetLang: 'en' })
       });
@@ -34,36 +35,38 @@
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto py-10 space-y-4">
-    <h1 class="text-3xl font-bold mb-4">Перекладач</h1>
+  <AuthLayout>
+    <div class="max-w-2xl mx-auto py-10 space-y-4">
+      <h1 class="text-3xl font-bold mb-4">Перекладач</h1>
 
-    <Textarea
-      v-model="inputText"
-      rows="4"
-      class="w-full"
-      placeholder="Введіть текст"
-    />
+      <Textarea
+        v-model="inputText"
+        rows="4"
+        class="w-full"
+        placeholder="Введіть текст"
+      />
 
-    <Dropdown
-      v-model="selectedLanguage"
-      :options="languages"
-      optionLabel="label"
-      optionValue="value"
-      placeholder="Оберіть мову"
-      class="w-full"
-    />
+      <Select
+        v-model="selectedLanguage"
+        :options="languages"
+        optionLabel="name"
+        optionValue="code"
+        placeholder="Оберіть мову"
+        class="w-full"
+      />
 
-    <Button
-      label="Перекласти"
-      class="w-full"
-      @click="translateText"
-    />
+      <Button
+        label="Перекласти"
+        class="w-full"
+        @click="translateText"
+      />
 
-    <div v-if="translatedText" class="p-4 bg-gray-100 rounded shadow">
-      <h2 class="font-semibold">Результат:</h2>
-      <p>{{ translatedText }}</p>
+      <div v-if="translatedText" class="p-4 bg-gray-100 rounded shadow">
+        <h2 class="font-semibold">Результат:</h2>
+        <p>{{ translatedText }}</p>
+      </div>
     </div>
-  </div>
+  </AuthLayout>
 </template>
 
 <style scoped>

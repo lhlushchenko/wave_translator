@@ -17,6 +17,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@primeuix/themes": "^1.0.3",
     "@vuepic/vue-datepicker": "^11.0.2",
     "pinia": "^3.0.1",
     "primeicons": "^7.0.0",

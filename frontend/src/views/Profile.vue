@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { useApiToast } from '@/composables/useApiToast.ts'
+  import AuthLayout from '@/layouts/AuthLayout.vue'
 
   const { showApiError, showApiSuccess } = useApiToast()
 
@@ -11,7 +12,10 @@
 
   const getProfile = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, { method: 'GET' })
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      })
       const data = await res.json()
       if (res.ok) {
         name.value = data.name
@@ -28,7 +32,7 @@
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
         body: JSON.stringify({
           name: name.value,
           email: email.value,
@@ -54,33 +58,35 @@
 </script>
 
 <template>
-  <div class="p-4">
-    <div class="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 class="text-2xl font-bold text-center mb-4">Мій профіль</h2>
+  <AuthLayout>
+    <div class="p-4">
+      <div class="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
+        <h2 class="text-2xl font-bold text-center mb-4">Мій профіль</h2>
 
-      <div class="mb-4">
-        <label for="name" class="block text-sm font-semibold text-gray-700">Ім’я</label>
-        <InputText v-model="name" id="name" class="w-full" />
+        <div class="mb-4">
+          <label for="name" class="block text-sm font-semibold text-gray-700">Ім’я</label>
+          <InputText v-model="name" id="name" class="w-full" />
+        </div>
+
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
+          <InputText v-model="email" id="email" type="email" class="w-full" disabled />
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-semibold text-gray-700">Поточний пароль</label>
+          <InputText v-model="password" id="password" type="password" class="w-full" />
+        </div>
+
+        <div class="mb-4">
+          <label for="newPassword" class="block text-sm font-semibold text-gray-700">Новий пароль</label>
+          <InputText v-model="newPassword" id="newPassword" type="password" class="w-full" />
+        </div>
+
+        <Button label="Оновити профіль" class="w-full mt-4" @click="updateProfile" />
       </div>
-
-      <div class="mb-4">
-        <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
-        <InputText v-model="email" id="email" type="email" class="w-full" disabled />
-      </div>
-
-      <div class="mb-4">
-        <label for="password" class="block text-sm font-semibold text-gray-700">Поточний пароль</label>
-        <InputText v-model="password" id="password" type="password" class="w-full" />
-      </div>
-
-      <div class="mb-4">
-        <label for="newPassword" class="block text-sm font-semibold text-gray-700">Новий пароль</label>
-        <InputText v-model="newPassword" id="newPassword" type="password" class="w-full" />
-      </div>
-
-      <Button label="Оновити профіль" class="w-full mt-4" @click="updateProfile" />
     </div>
-  </div>
+  </AuthLayout>
 </template>
 
 <style scoped>
